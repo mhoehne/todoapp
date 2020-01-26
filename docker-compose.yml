@@ -1,0 +1,28 @@
+version: '3'
+services:
+  npm:
+    image: node:12
+    restart: "no"
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint: npm install
+  app:
+    image: node:12
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    entrypoint: node /app/todoapp.js
+    links:
+      - mongo
+    depends_on:
+      - npm
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+
