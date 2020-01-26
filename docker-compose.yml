@@ -19,10 +19,10 @@ services:
       - mongo
     depends_on:
       - npm
+      - mongo
   mongo:
     image: mongo:latest
     ports:
       - 27017:27017
     volumes:
       - ./data:/data/db
-
