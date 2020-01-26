@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://mongo:27017/todo', {useNewUrlParser: true});
 
 const Todo = mongoose.model('Todo', {
-  id:Number,
   Titel:String,
   Datum:String,
   Autor:String,
@@ -10,14 +9,8 @@ const Todo = mongoose.model('Todo', {
   Fertig:Boolean
 });
 
-// const Aufgabe = new Todo({ Titel: 'Zildjian', id:1 });
-// Aufgabe.save().then(() => console.log('meow'));
-
-
-let idcounter = 1
 
 function insert(Aufgabe) {
-  Aufgabe.id= ++idcounter
   return Todo.create(Aufgabe)
 }
 
@@ -26,7 +19,7 @@ function getall() {
 }
 
 function getbyid(id) {
-  return Todo.findOne({id}).exec()
+  return Todo.findOne({_id:id}).exec()
 }
 
 function updatebyid (id, body) {
@@ -45,7 +38,7 @@ function updatebyid (id, body) {
 }
 
 function deletebyid(id) {
-  return Todo.remove({id}).exec()
+  return Todo.remove({_id:id}).exec()
 }
 
 module.exports = {

@@ -25,10 +25,10 @@
           const input = document.createElement('input')
           const button = document.createElement('button')
           button.setAttribute('type', 'button')
-          button.setAttribute('onclick', `deletetask(${Aufgabe.id})`)
+          button.setAttribute('onclick', `deletetask('${Aufgabe._id}')`)
           button.innerHTML = '-'
           input.setAttribute('type', 'checkbox')
-          input.setAttribute('onChange', `updatetask(${Aufgabe.id}, this.checked)`)
+          input.setAttribute('onChange', `updatetask('${Aufgabe._id}', this.checked)`)
             if(Aufgabe.Fertig || false) {
               input.setAttribute('checked', true)
             }
@@ -57,7 +57,7 @@
 
       function updatetask(id, Fertig) {
 
-        const Aufgabe = {id:id, Fertig:Fertig}
+        const Aufgabe = {_id:id, Fertig:Fertig}
         let xhr = new XMLHttpRequest();
         xhr.open('PUT', `/todo/${id}`);
         xhr.setRequestHeader('Content-Type', 'application/json')
