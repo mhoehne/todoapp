@@ -15,6 +15,11 @@ app.post('/todo', function(req, res, next) {
 });
 
 //GET ALL
+const path = require('path');
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'))
+  });
+
 app.get('/todos', function(req, res, next) {
   res.set('Content-Type', 'application/json')
   return res.send(JSON.stringify(todo_repository.getall()))

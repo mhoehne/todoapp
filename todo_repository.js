@@ -34,7 +34,7 @@ function updatebyid (id, body) {
       Aufgabe.Datum = body.Datum || Aufgabe.Datum
       Aufgabe.Author= body.Author || Aufgabe.Author
       Aufgabe.Kategorie = body.Kategorie || Aufgabe.Kategorie
-      Aufgabe.Fertig = body.Fertig || Aufgabe.Fertig
+      Aufgabe.Fertig = (body.Fertig || false)
     }
 }
 

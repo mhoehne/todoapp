@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>TODO APP</title>
+    <script type="text/javascript">
+
+
+      function refreshlist() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/todos');
+        xhr.send();
+        xhr.onload = function() {
+          if(xhr.status == 200) {
+            filledlist (JSON.parse(xhr.response));
+          }
+        };
+      }
+
+      function filledlist (res) {
+        document.querySelector('#AufgabenListe').innerHTML = ''
+        for (var i = 0; i < res.length; i++) {
+          const Aufgabe = res[i]
+          const li = document.createElement('li')
+          const input = document.createElement('input')
+          const button = document.createElement('button')
+          button.setAttribute('type', 'button')
+          button.setAttribute('onclick', `deletetask(${Aufgabe.id})`)
+          button.innerHTML = '-'
+          input.setAttribute('type', 'checkbox')
+          input.setAttribute('onChange', `updatetask(${Aufgabe.id}, this.checked)`)
+            if(Aufgabe.Fertig || false) {
+              input.setAttribute('checked', true)
+            }
+          li.appendChild(input)
+          li.innerHTML += Aufgabe.Titel
+          li.appendChild(button)
+          document.querySelector('#AufgabenListe')
+          .appendChild(li)
+        }
+      }
+
+      function newtask() {
+        const Titel = document.querySelector('#Aufgabe')
+        .value
+        const Aufgabe = {Titel}
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/todo');
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        xhr.send(JSON.stringify(Aufgabe));
+        xhr.onload = function() {
+          if(xhr.status == 201) {
+            refreshlist()
+          }
+        };
+      }
+
+      function updatetask(id, Fertig) {
+
+        const Aufgabe = {id:id, Fertig:Fertig}
+        let xhr = new XMLHttpRequest();
+        xhr.open('PUT', `/todo/${id}`);
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        xhr.send(JSON.stringify(Aufgabe));
+        xhr.onload = function() {
+          if(xhr.status == 200) {
+            refreshlist()
+          }
+        };
+      }
+
+      function deletetask (id) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('DELETE', `/todo/${id}`);
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        xhr.send();
+        xhr.onload = function() {
+          if(xhr.status == 200) {
+            refreshlist()
+          }
+        };
+      }
+
+    </script>
+  </head>
+  <body onload="refreshlist()">
+    <label for="Aufgabe">Neue Aufgabe: </label>
+    <input id="Aufgabe" type="text" placeholder="z.B. Katze füttern">
+    <button type="button" name="button" onclick="newtask()">+</button>
+    <br>
+    <ol id="AufgabenListe">
+
+    </ol>
+  </body>
+
+</html>
