@@ -10,8 +10,9 @@ app.use(express.json()) //for parsing application/JSON
 //POST
 app.post('/todo', function(req, res, next) {
   res.set('Content-Type', 'application/json')
-  const Aufgabe = todo_repository.insert(req.body)
-  return res.status(201).send(JSON.stringify(Aufgabe))
+  todo_repository.insert(req.body).then(function(Aufgabe){
+      return res.status(201).send(JSON.stringify(Aufgabe))
+  })
 });
 
 //GET ALL
@@ -22,41 +23,49 @@ app.get('/', function(req, res) {
 
 app.get('/todos', function(req, res, next) {
   res.set('Content-Type', 'application/json')
-  return res.send(JSON.stringify(todo_repository.getall()))
+  todo_repository.getall().then(function(todos){
+    res.send(JSON.stringify(todos))
+  })
 });
 
 //GET by ID
 app.get('/todo/:id', function(req, res, next) {
   res.set('Content-Type', 'application/json')
-  const Aufgabe = todo_repository.getbyid (req.params.id)
-  if (Aufgabe) {
-    return res.status(200).send(JSON.stringify(Aufgabe))
-  }
-
-  return res.sendStatus(404)
+  todo_repository.getbyid (req.params.id).then(function(Aufgabe){
+    if (Aufgabe) {
+      return res.status(200).send(JSON.stringify(Aufgabe))
+    }
+  }).catch(function(){
+    return res.sendStatus(404)
+  })
 });
 
 //PUT
 app.put('/todo/:id', function(req, res, next) {
   res.set('Content-Type', 'application/json')
-  const Aufgabe = todo_repository.getbyid(req.params.id)
+  const Aufgabe = todo_repository.getbyid(req.params.id).then(function(Aufgabe){
     if (Aufgabe) {
-      todo_repository.updatebyid(req.params.id, req.body)
-      return res.status(200).send(JSON.stringify(Aufgabe))
+      todo_repository.updatebyid(req.params.id, req.body).then(function(Aufgabe){
+        res.status(200).send(JSON.stringify(Aufgabe))
+      })
     }
-
-  return res.sendStatus(404)
+  }).catch(function(){
+    return res.sendStatus(404)
+  })
 });
 
 //DEL
 app.delete('/todo/:id', function(req, res, next) {
   res.set('Content-Type', 'application/json')
-  Aufgabe = todo_repository.getbyid(req.params.id)
+  todo_repository.getbyid(req.params.id).then(function(Aufgabe){
     if (Aufgabe) {
-      todo_repository.deletebyid(req.params.id)
-      return res.sendStatus(200)
+      todo_repository.deletebyid(req.params.id).then(function(){
+        return res.sendStatus(200)
+      })
     }
-  return res.sendStatus(404)
+  }).catch(function(){
+      return res.sendStatus(404)
+  })
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

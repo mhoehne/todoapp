@@ -1,49 +1,51 @@
-const todos = [
-  {
-    id:1,
-    Titel:'Aufgaben',
-    Datum:'2020/01/25',
-    Author:'Martin',
-    Kategorie:'Uni',
-    Fertig: false,
-  }]
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://mongo:27017/todo', {useNewUrlParser: true});
+
+const Todo = mongoose.model('Todo', {
+  id:Number,
+  Titel:String,
+  Datum:String,
+  Autor:String,
+  Kategorie:String,
+  Fertig:Boolean
+});
+
+// const Aufgabe = new Todo({ Titel: 'Zildjian', id:1 });
+// Aufgabe.save().then(() => console.log('meow'));
+
+
 let idcounter = 1
 
 function insert(Aufgabe) {
   Aufgabe.id= ++idcounter
-  todos.push(Aufgabe)
-  return Aufgabe
+  return Todo.create(Aufgabe)
 }
 
 function getall() {
-  return todos
+    return Todo.find().exec()
 }
 
 function getbyid(id) {
-  for(i=0; i<todos.length; i++) {
-    if (id == todos[i].id) {
-      return todos[i]
-    }
-  }
+  return Todo.findOne({id}).exec()
 }
 
 function updatebyid (id, body) {
-  const Aufgabe = getbyid(id)
+  return getbyid(id).then(function(Aufgabe){
     if (Aufgabe) {
       Aufgabe.Titel = body.Titel || Aufgabe.Titel
       Aufgabe.Datum = body.Datum || Aufgabe.Datum
-      Aufgabe.Author= body.Author || Aufgabe.Author
+      Aufgabe.Author= body.Autor || Aufgabe.Autor
       Aufgabe.Kategorie = body.Kategorie || Aufgabe.Kategorie
       Aufgabe.Fertig = (body.Fertig || false)
     }
+    return Aufgabe.save()
+  })
+
+
 }
 
 function deletebyid(id) {
-  const Aufgabe = getbyid(id)
-    if (Aufgabe) {
-      const index = todos.indexOf(Aufgabe);
-      todos.splice(index, 1); // removes 1 element from position i
-    }
+  return Todo.remove({id}).exec()
 }
 
 module.exports = {
