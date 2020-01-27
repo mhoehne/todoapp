@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://mongo:27017/todo', {useNewUrlParser: true}).catch(function(){
-  process.exit(1) 
+  process.exit(1)
 })
 
 const Todo = mongoose.model('Todo', {
@@ -16,8 +16,15 @@ function insert(Aufgabe) {
   return Todo.create(Aufgabe)
 }
 
-function getall() {
-    return Todo.find().exec()
+function getall({Status, Kategorie}) {
+  const filtern = {}
+  if (Status != 'all') {
+    filtern.Fertig = Status == 'done'?true:false
+  }
+  if (Kategorie != 'all') {
+    filtern.Kategorie = Kategorie
+  }
+    return Todo.find(filtern).exec()
 }
 
 function getbyid(id) {

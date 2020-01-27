@@ -8,7 +8,9 @@
 
       function refreshlist() {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', '/todos');
+        const Status = document.querySelector('#Status_Filter').value
+        const Kategorie = document.querySelector('#Kategorie_Filter').value
+        xhr.open('GET', `/todos?Status=${Status}&Kategorie=${Kategorie}`);
         xhr.send();
         xhr.onload = function() {
           if(xhr.status == 200) {
@@ -94,6 +96,21 @@
     </select>
     <button type="button" name="button" onclick="newtask()">+</button>
     <br>
+    <br>
+    <label for="Status_Filter">Status</label>
+    <select id="Status_Filter" onchange="refreshlist()">
+      <option value="all">Alle</option>
+      <option value="done">Fertig</option>
+      <option value="pending">Ausstehend</option>
+    </select>
+    <label for="Kategorie_Filter">Kategorie</label>
+    <select id="Kategorie_Filter" onchange="refreshlist()">
+      <option value="all">Alle</option>
+      <option value="Uni">Uni</option>
+      <option value="Arbeit">Arbeit</option>
+      <option value="Sport">Sport</option>
+    </select>
+
     <ol id="AufgabenListe">
 
     </ol>

@@ -22,8 +22,10 @@ app.get('/', function(req, res) {
   });
 
 app.get('/todos', function(req, res, next) {
+  const Status = req.query.Status||'all'
+  const Kategorie = req.query.Kategorie||'all'
   res.set('Content-Type', 'application/json')
-  todo_repository.getall().then(function(todos){
+  todo_repository.getall({Status, Kategorie}).then(function(todos){
     res.send(JSON.stringify(todos))
   })
 });
