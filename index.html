@@ -33,7 +33,7 @@
               input.setAttribute('checked', true)
             }
           li.appendChild(input)
-          li.innerHTML += Aufgabe.Titel
+          li.innerHTML += `${Aufgabe.Titel} [${Aufgabe.Kategorie}] `
           li.appendChild(button)
           document.querySelector('#AufgabenListe')
           .appendChild(li)
@@ -43,7 +43,8 @@
       function newtask() {
         const Titel = document.querySelector('#Aufgabe')
         .value
-        const Aufgabe = {Titel}
+        const Kategorie = document.querySelector('#Kategorie').value
+        const Aufgabe = {Titel, Kategorie}
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/todo');
         xhr.setRequestHeader('Content-Type', 'application/json')
@@ -86,6 +87,11 @@
   <body onload="refreshlist()">
     <label for="Aufgabe">Neue Aufgabe: </label>
     <input id="Aufgabe" type="text" placeholder="z.B. Katze füttern">
+    <select id="Kategorie">
+      <option value="Uni">Uni</option>
+      <option value="Arbeit">Arbeit</option>
+      <option value="Sport">Sport</option>
+    </select>
     <button type="button" name="button" onclick="newtask()">+</button>
     <br>
     <ol id="AufgabenListe">

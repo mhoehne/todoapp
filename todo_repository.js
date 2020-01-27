@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://mongo:27017/todo', {useNewUrlParser: true}).catch(function(){
-  process.exit(1)
+  process.exit(1) 
 })
 
 const Todo = mongoose.model('Todo', {
