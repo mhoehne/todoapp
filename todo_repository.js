@@ -13,13 +13,19 @@ const Todo = mongoose.model('Todo', {
 
 
 function insert(Aufgabe) {
+  if (Aufgabe.Fertig == undefined) {
+    Aufgabe.Fertig = false
+  }
   return Todo.create(Aufgabe)
 }
 
 function getall({Status, Kategorie}) {
   const filtern = {}
-  if (Status != 'all') {
-    filtern.Fertig = Status == 'done'?true:false
+  if (Status == 'done') {
+    filtern.Fertig = true
+  }
+  else if (Status == 'pending') {
+    filtern.Fertig = false
   }
   if (Kategorie != 'all') {
     filtern.Kategorie = Kategorie

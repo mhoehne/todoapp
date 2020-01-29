@@ -56,7 +56,7 @@ app.put('/todo/:id', function(req, res, next) {
   })
 });
 
-//DEL
+//DELETE
 app.delete('/todo/:id', function(req, res, next) {
   res.set('Content-Type', 'application/json')
   todo_repository.getbyid(req.params.id).then(function(Aufgabe){

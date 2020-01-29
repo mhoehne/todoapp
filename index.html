@@ -86,6 +86,7 @@
 
     </script>
   </head>
+  
   <body onload="refreshlist()">
     <label for="Aufgabe">Neue Aufgabe: </label>
     <input id="Aufgabe" type="text" placeholder="z.B. Katze füttern">
@@ -97,12 +98,14 @@
     <button type="button" name="button" onclick="newtask()">+</button>
     <br>
     <br>
+
     <label for="Status_Filter">Status</label>
     <select id="Status_Filter" onchange="refreshlist()">
       <option value="all">Alle</option>
       <option value="done">Fertig</option>
       <option value="pending">Ausstehend</option>
     </select>
+
     <label for="Kategorie_Filter">Kategorie</label>
     <select id="Kategorie_Filter" onchange="refreshlist()">
       <option value="all">Alle</option>
